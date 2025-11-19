@@ -9,7 +9,7 @@ import {
 export const app = express();
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.ALLOWED_ORIGIN,
   methods: ["POST", "GET", "DELETE"]
 }));
 app.use(express.json());
