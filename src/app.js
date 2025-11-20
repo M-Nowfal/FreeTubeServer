@@ -5,11 +5,11 @@ import {
   createAccount, getHistory, 
   login, removeHistory 
 } from "./controller.js";
+import { allowed_origin } from "./constant.js";
 
 export const app = express();
-
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGIN,
+  origin: allowed_origin,
   methods: ["POST", "GET", "DELETE"]
 }));
 app.use(express.json());

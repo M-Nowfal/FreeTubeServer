@@ -3,7 +3,10 @@ import bcryptjs from "bcryptjs";
 
 export const createAccount = async (req, res) => {
   try {
-    const { username, password, confirmPassword } = req.body;
+    const { username, password, confirmPassword, history } = req.body;
+
+    if (password.length <= 6)
+      return res.status(401).json({ message: "Password is too short" });
 
     if (password !== confirmPassword)
       return res.status(401).json({ message: "Password do not match" });
@@ -13,7 +16,7 @@ export const createAccount = async (req, res) => {
       return res.status(400).json({ message: "Username already exist, use different username" });
 
     const hashedPassword = await bcryptjs.hash(password, await bcryptjs.genSalt(12));
-    await User.create({ username, password: hashedPassword, history: [] });
+    await User.create({ username, password: hashedPassword, history });
 
     res.status(201).json({ message: "Account created successfully!" });
   } catch (err) {
