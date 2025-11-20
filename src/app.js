@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { 
   addHistory, clearHistory, 
-  createAccount, getHistory, 
+  createAccount, deleteAccount, getHistory, 
   login, removeHistory 
 } from "./controller.js";
 import { allowed_origin } from "./constant.js";
@@ -15,6 +15,7 @@ app.use(cors({
 app.use(express.json());
 
 app.post("/api/create", createAccount);
+app.delete("/api/delete", deleteAccount);
 app.post("/api/login", login);
 
 app.get("/api/history", getHistory);

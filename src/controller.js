@@ -25,6 +25,31 @@ export const createAccount = async (req, res) => {
   }
 }
 
+export const deleteAccount = async (req, res) => {
+  try {
+    const { username, password, confirmation } = req.body;
+
+    if (confirmation !== `Delete${username}`)
+      return res.status(400).json({ message: "Confirmation needed" });
+
+    const user = await User.findOne({ username });
+
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
+
+    const isMatch = await bcryptjs.compare(password, user.password);
+    if (!isMatch)
+      return res.status(401).json({ message: "Incorrect password" });
+
+    await User.findByIdAndDelete(user._id);
+
+    res.status(200).json({ message: "Account deleted" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
